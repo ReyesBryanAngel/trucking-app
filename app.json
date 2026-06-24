@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "FleetTrack",
+    "slug": "trucking-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#1A3C5E"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.fleettrack.driver"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1A3C5E"
+      },
+      "package": "com.fleettrack.driver"
+    }
+  }
+}

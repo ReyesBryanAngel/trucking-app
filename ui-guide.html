@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trucking App — UI Guide</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1A3C5E;
+      --blue:   #3B82F6;
+      --light:  #93C5FD;
+      --bg:     #F5F7FA;
+      --white:  #FFFFFF;
+      --border: #E5E7EB;
+      --text:   #1A1A2E;
+      --muted:  #6B7280;
+
+      --status-pending-bg:   #EFF6FF; --status-pending-txt:   #1D4ED8;
+      --status-ready-bg:     #ECFDF5; --status-ready-txt:     #065F46;
+      --status-progress-bg:  #FFF7ED; --status-progress-txt:  #C2410C;
+      --status-delivered-bg: #F0FDF4; --status-delivered-txt: #15803D;
+      --status-delayed-bg:   #FEF2F2; --status-delayed-txt:   #B91C1C;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 48px 32px 36px;
+    }
+    .site-header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
+    .site-header p  { color: var(--light); font-size: 14px; margin-top: 6px; }
+
+    /* ── Nav tabs ── */
+    .tab-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 0;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .tab-bar a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-bar a:hover { color: var(--navy); border-bottom-color: var(--navy); }
+
+    /* ── Sections ── */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 32px;
+    }
+    .section + .section { border-top: 1px solid var(--border); }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .section-desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 36px;
+      max-width: 620px;
+    }
+
+    /* ── Screen grid ── */
+    .screen-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+    }
+    .screen-card {
+      flex: 0 0 auto;
+    }
+    .phone-frame {
+      width: 200px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.06);
+      background: #000;
+    }
+    .phone-frame img {
+      width: 100%;
+      display: block;
+    }
+    .screen-label {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .screen-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+      max-width: 200px;
+      line-height: 1.5;
+    }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: 36px;
+    }
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .flow-bubble {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+    .flow-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      max-width: 80px;
+      line-height: 1.3;
+    }
+    .flow-arrow {
+      font-size: 20px;
+      color: var(--border);
+      margin: 0 8px;
+      margin-bottom: 24px;
+    }
+
+    /* ── Status badges ── */
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .badge {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+    .badge-pending   { background: var(--status-pending-bg);   color: var(--status-pending-txt); }
+    .badge-ready     { background: var(--status-ready-bg);     color: var(--status-ready-txt); }
+    .badge-progress  { background: var(--status-progress-bg);  color: var(--status-progress-txt); }
+    .badge-delivered { background: var(--status-delivered-bg); color: var(--status-delivered-txt); }
+    .badge-delayed   { background: var(--status-delayed-bg);   color: var(--status-delayed-txt); }
+
+    /* ── Colour palette ── */
+    .palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .swatch {
+      width: 100px;
+    }
+    .swatch-color {
+      height: 56px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,.07);
+    }
+    .swatch-name  { font-size: 12px; font-weight: 700; color: var(--navy); margin-top: 7px; }
+    .swatch-hex   { font-size: 11px; color: var(--muted); font-family: monospace; }
+
+    /* ── Buttons showcase ── */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      border: none;
+      cursor: default;
+      letter-spacing: 0.4px;
+    }
+    .btn-primary   { background: #1A3C5E; }
+    .btn-success   { background: #16A34A; }
+    .btn-warning   { background: #D97706; }
+    .btn-danger    { background: #DC2626; }
+    .btn-disabled  { background: #D1D5DB; color: #9CA3AF; }
+
+    /* ── Component cards ── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .component-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .component-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .component-card p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .component-card code {
+      font-size: 11px;
+      background: var(--bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      color: #C2410C;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      margin-right: 4px;
+    }
+
+    /* ── Action table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      background: var(--navy);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #FAFAFA; }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: var(--navy);
+      color: var(--light);
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="site-header">
+  <h1>Trucking App — UI Guide</h1>
+  <p>Quick visual overview for developers &bull; React Native &bull; Expo &bull; TypeScript</p>
+</header>
+
+<!-- ── Nav ── -->
+<nav class="tab-bar">
+  <a href="#screens">Screens</a>
+  <a href="#flow">Trip Flow</a>
+  <a href="#status">Status Badges</a>
+  <a href="#buttons">Buttons</a>
+  <a href="#components">Components</a>
+  <a href="#colors">Colors</a>
+  <a href="#actions">Action Map</a>
+</nav>
+
+
+<!-- ════════════════════════════════════════
+     SCREENS
+════════════════════════════════════════ -->
+<section class="section" id="screens">
+  <p class="section-label">01 — Screens</p>
+  <h2 class="section-title">All App Screens</h2>
+  <p class="section-desc">
+    Three navigable screens make up the current app: Trip List, Trip Detail, and Pre-Trip Inspection.
+    The screenshots below were captured on Android Emulator (Medium Phone API 35).
+  </p>
+
+  <div class="screen-grid">
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 222952.png" alt="Trip List Screen" />
+      </div>
+      <p class="screen-label">Trip List</p>
+      <p class="screen-desc">Daily overview summary + scrollable trip card list. Entry point of the app.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223004.png" alt="Trip Detail — Pending" />
+      </div>
+      <p class="screen-label">Trip Detail — Pending</p>
+      <p class="screen-desc">Truck & driver info, cargo details, and the "Start Pre-Trip Inspection" action.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223027.png" alt="Pre-Trip Inspection — Empty" />
+      </div>
+      <p class="screen-label">Pre-Trip Inspection</p>
+      <p class="screen-desc">Checklist of 5 safety items. Button stays disabled until all items are checked.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223037.png" alt="Pre-Trip Inspection — Complete" />
+      </div>
+      <p class="screen-label">Inspection — All Checked</p>
+      <p class="screen-desc">Progress bar fills to 100% and the "Submit Inspection" button activates.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223046.png" alt="Inspection Passed Dialog" />
+      </div>
+      <p class="screen-label">Inspection Passed Dialog</p>
+      <p class="screen-desc">Alert confirms all items passed and trip status advances to "Ready to Start".</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223057.png" alt="Trip Detail — Ready to Start" />
+      </div>
+      <p class="screen-label">Trip Detail — Ready to Start</p>
+      <p class="screen-desc">"Start Trip" and "Reset to Pending" actions are now available.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223112.png" alt="Trip Detail — In Progress" />
+      </div>
+      <p class="screen-label">Trip Detail — In Progress</p>
+      <p class="screen-desc">Trip start timestamp appears. Driver can mark delivered or report a delay.</p>
+    </div>
+
+    <div class="screen-card">
+      <div class="phone-frame">
+        <img src="src/assets/images/Screenshot 2026-06-24 223200.png" alt="Trip Detail — Delayed" />
+      </div>
+      <p class="screen-label">Trip Detail — Delayed</p>
+      <p class="screen-desc">Amber warning note box appears. Only "Reset to Pending" is available.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     TRIP FLOW
+════════════════════════════════════════ -->
+<section class="section" id="flow">
+  <p class="section-label">02 — Trip Flow</p>
+  <h2 class="section-title">Status Lifecycle</h2>
+  <p class="section-desc">
+    Each trip moves through a fixed set of states. The "Reset to Pending" action is available
+    on any status except Pending, allowing a driver to restart the flow.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-bubble" style="background:#EFF6FF">📋</div>
+      <span class="flow-name">Pending</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-bubble" style="background:#F3F4F6">🔍</div>
+      <span class="flow-name">Inspection</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-bubble" style="background:#ECFDF5">✅</div>
+      <span class="flow-name">Ready to Start</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-bubble" style="background:#FFF7ED">🚚</div>
+      <span class="flow-name">In Progress</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-bubble" style="background:#F0FDF4">📦</div>
+      <span class="flow-name">Delivered</span>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>From Status</th>
+        <th>Action</th>
+        <th>Next Status</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-pending">Pending</span></td>
+        <td>Start Pre-Trip Inspection</td>
+        <td>— (navigates to inspection screen)</td>
+        <td>All 5 checklist items must be ticked</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-pending">Pending</span></td>
+        <td>Submit Inspection</td>
+        <td><span class="badge badge-ready">Ready to Start</span></td>
+        <td>Sets <code>inspectionCompleted: true</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-ready">Ready to Start</span></td>
+        <td>Start Trip</td>
+        <td><span class="badge badge-progress">In Progress</span></td>
+        <td>Stamps <code>startedAt</code> timestamp</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-progress">In Progress</span></td>
+        <td>Mark as Delivered</td>
+        <td><span class="badge badge-delivered">Delivered</span></td>
+        <td>Requires confirmation alert. Stamps <code>deliveredAt</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-progress">In Progress</span></td>
+        <td>Report Delay</td>
+        <td><span class="badge badge-delayed">Delayed</span></td>
+        <td>Requires confirmation alert</td>
+      </tr>
+      <tr>
+        <td>Any (except Pending)</td>
+        <td>Reset to Pending</td>
+        <td><span class="badge badge-pending">Pending</span></td>
+        <td>Clears <code>startedAt</code>, <code>deliveredAt</code>, resets <code>inspectionCompleted</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     STATUS BADGES
+════════════════════════════════════════ -->
+<section class="section" id="status">
+  <p class="section-label">03 — Status Badges</p>
+  <h2 class="section-title">TripStatus Badges</h2>
+  <p class="section-desc">
+    Rendered by <code>StatusBadge</code>. Colors are driven by the <code>STATUS_COLORS</code>
+    map in <code>src/utils/statusHelpers.ts</code>.
+  </p>
+
+  <div class="badge-grid">
+    <span class="badge badge-pending">Pending</span>
+    <span class="badge badge-ready">Ready to Start</span>
+    <span class="badge badge-progress">In Progress</span>
+    <span class="badge badge-delivered">Delivered</span>
+    <span class="badge badge-delayed">Delayed</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Status</th><th>Background</th><th>Text Color</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pending</td><td><code>#EFF6FF</code></td><td><code>#1D4ED8</code></td></tr>
+      <tr><td>Ready to Start</td><td><code>#ECFDF5</code></td><td><code>#065F46</code></td></tr>
+      <tr><td>In Progress</td><td><code>#FFF7ED</code></td><td><code>#C2410C</code></td></tr>
+      <tr><td>Delivered</td><td><code>#F0FDF4</code></td><td><code>#15803D</code></td></tr>
+      <tr><td>Delayed</td><td><code>#FEF2F2</code></td><td><code>#B91C1C</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     BUTTONS
+════════════════════════════════════════ -->
+<section class="section" id="buttons">
+  <p class="section-label">04 — Buttons</p>
+  <h2 class="section-title">PrimaryButton Variants</h2>
+  <p class="section-desc">
+    All action buttons use <code>PrimaryButton</code> from <code>src/components/PrimaryButton.tsx</code>.
+    Pass the <code>variant</code> prop to change color, and <code>loading</code> to show a spinner.
+  </p>
+
+  <div class="btn-row">
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-warning">Warning</button>
+    <button class="btn btn-danger">Danger</button>
+    <button class="btn btn-disabled">Disabled</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Variant</th><th>Color</th><th>Used For</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>primary</code></td><td><code>#1A3C5E</code></td><td>Start Pre-Trip Inspection</td></tr>
+      <tr><td><code>success</code></td><td><code>#16A34A</code></td><td>Start Trip, Submit Inspection, Mark as Delivered</td></tr>
+      <tr><td><code>warning</code></td><td><code>#D97706</code></td><td>Report Delay</td></tr>
+      <tr><td><code>danger</code></td><td><code>#DC2626</code></td><td>Reset to Pending</td></tr>
+      <tr><td><code>—</code></td><td><code>#D1D5DB</code></td><td>Disabled state (all variants)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     COMPONENTS
+════════════════════════════════════════ -->
+<section class="section" id="components">
+  <p class="section-label">05 — Components</p>
+  <h2 class="section-title">Shared Components</h2>
+  <p class="section-desc">All reusable components live in <code>src/components/</code>.</p>
+
+  <div class="component-grid">
+
+    <div class="component-card">
+      <h3>TripCard</h3>
+      <p>Renders a single trip row in the list: ID, status badge, plate chip, route visualiser, cargo, and ETA.</p>
+      <div><span class="tag">trip: Trip</span><span class="tag">onPress: () =&gt; void</span></div>
+    </div>
+
+    <div class="component-card">
+      <h3>StatusBadge</h3>
+      <p>Pill badge that maps a <code>TripStatus</code> to its background and text color via <code>STATUS_COLORS</code>.</p>
+      <div><span class="tag">status: TripStatus</span></div>
+    </div>
+
+    <div class="component-card">
+      <h3>PrimaryButton</h3>
+      <p>Full-width action button with four color variants, a loading spinner state, and disabled styling.</p>
+      <div><span class="tag">label</span><span class="tag">variant</span><span class="tag">loading</span><span class="tag">disabled</span></div>
+    </div>
+
+    <div class="component-card">
+      <h3>SummaryCard</h3>
+      <p>Dark overview card at the top of the list showing Total, In Progress, Delivered, and Delayed counts.</p>
+      <div><span class="tag">total</span><span class="tag">inProgress</span><span class="tag">delivered</span><span class="tag">delayed</span></div>
+    </div>
+
+    <div class="component-card">
+      <h3>ChecklistItem</h3>
+      <p>Tappable row for the pre-trip inspection checklist. Shows a green checkbox and strikethrough when checked.</p>
+      <div><span class="tag">item: InspectionItem</span><span class="tag">onToggle: (id) =&gt; void</span></div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     COLORS
+════════════════════════════════════════ -->
+<section class="section" id="colors">
+  <p class="section-label">06 — Colors</p>
+  <h2 class="section-title">Core Palette</h2>
+  <p class="section-desc">Brand colors used throughout the app. All values are defined inline in component stylesheets.</p>
+
+  <div class="palette">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1A3C5E"></div>
+      <p class="swatch-name">Navy</p>
+      <p class="swatch-hex">#1A3C5E</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#3B82F6"></div>
+      <p class="swatch-name">Blue</p>
+      <p class="swatch-hex">#3B82F6</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#93C5FD"></div>
+      <p class="swatch-name">Light Blue</p>
+      <p class="swatch-hex">#93C5FD</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F5F7FA; border:1px solid #E5E7EB"></div>
+      <p class="swatch-name">Background</p>
+      <p class="swatch-hex">#F5F7FA</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FFFFFF; border:1px solid #E5E7EB"></div>
+      <p class="swatch-name">Surface</p>
+      <p class="swatch-hex">#FFFFFF</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#6B7280"></div>
+      <p class="swatch-name">Muted</p>
+      <p class="swatch-hex">#6B7280</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#16A34A"></div>
+      <p class="swatch-name">Success</p>
+      <p class="swatch-hex">#16A34A</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#D97706"></div>
+      <p class="swatch-name">Warning</p>
+      <p class="swatch-hex">#D97706</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#DC2626"></div>
+      <p class="swatch-name">Danger</p>
+      <p class="swatch-hex">#DC2626</p>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#162D47"></div>
+      <p class="swatch-name">Card Dark</p>
+      <p class="swatch-hex">#162D47</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════
+     ACTION MAP
+════════════════════════════════════════ -->
+<section class="section" id="actions">
+  <p class="section-label">07 — Action Map</p>
+  <h2 class="section-title">Where Actions Live in Code</h2>
+  <p class="section-desc">A quick reference from UI action to the function that handles it.</p>
+
+  <table>
+    <thead>
+      <tr><th>UI Action</th><th>Screen</th><th>Handler</th><th>Context Method</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tap a trip card</td>
+        <td>TripListScreen</td>
+        <td><code>navigation.navigate('TripDetail')</code></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Start Pre-Trip Inspection</td>
+        <td>TripDetailScreen</td>
+        <td><code>navigation.navigate('PreTripInspection')</code></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td>Tap checklist item</td>
+        <td>PreTripInspectionScreen</td>
+        <td><code>handleToggle(id)</code></td>
+        <td>local state only</td>
+      </tr>
+      <tr>
+        <td>Submit Inspection</td>
+        <td>PreTripInspectionScreen</td>
+        <td><code>handleSubmit()</code></td>
+        <td><code>markInspectionComplete(tripId)</code></td>
+      </tr>
+      <tr>
+        <td>Start Trip</td>
+        <td>TripDetailScreen</td>
+        <td><code>handleStartTrip()</code></td>
+        <td><code>updateStatus(id, 'In Progress', { startedAt })</code></td>
+      </tr>
+      <tr>
+        <td>Mark as Delivered</td>
+        <td>TripDetailScreen</td>
+        <td><code>handleDeliver()</code></td>
+        <td><code>updateStatus(id, 'Delivered', { deliveredAt })</code></td>
+      </tr>
+      <tr>
+        <td>Report Delay</td>
+        <td>TripDetailScreen</td>
+        <td><code>handleReportDelay()</code></td>
+        <td><code>updateStatus(id, 'Delayed')</code></td>
+      </tr>
+      <tr>
+        <td>Reset to Pending</td>
+        <td>TripDetailScreen</td>
+        <td><code>handleReset()</code></td>
+        <td><code>resetTrip(tripId)</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+<footer class="site-footer">
+  Trucking App &mdash; UI Guide &bull; Generated 2026-06-24 &bull; React Native / Expo / TypeScript
+</footer>
+
+</body>
+</html>
